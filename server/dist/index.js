@@ -9,7 +9,13 @@ const cors_1 = __importDefault(require("cors"));
 const admin_auth_1 = __importDefault(require("./routes/admin.auth"));
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
-app.use((0, cors_1.default)());
+app.use((0, cors_1.default)({
+    origin: "http://localhost:3000",
+    credentials: true,
+}));
 dotenv_1.default.config();
+app.get("/test", (req, res) => {
+    res.send("Backend is alive");
+});
 app.use("/api/admin", admin_auth_1.default);
 app.listen(4000);

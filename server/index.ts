@@ -6,14 +6,17 @@ const app = express();
 
 
 app.use(express.json());
-app.use(cors())
+app.use(cors({
+ origin: "http://localhost:3000",
+  credentials: true,   
+}))
  
 dotenv.config()
 
 
 
 
-app.get("/api/test", (req, res) => {
+app.get("/test", (req, res) => {
   res.send("Backend is alive")
 })
 
