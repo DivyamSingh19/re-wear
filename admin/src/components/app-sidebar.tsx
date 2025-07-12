@@ -25,18 +25,9 @@ import {
 const data = {
   navMain: [
     {
-      title: "Getting Started",
-      url: "#",
-      items: [
-        {
-          title: "Installation",
-          url: "#",
-        },
-        {
-          title: "Project Structure",
-          url: "#",
-        },
-      ],
+      title: "manage-spam",
+      url: "/dashboard/manage-spam",
+       
     },
     {
       title: "Building Your Application",
@@ -196,8 +187,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   <CollapsibleTrigger asChild>
                     <SidebarMenuButton>
                       {item.title}{" "}
-                      <Plus className="ml-auto group-data-[state=open]/collapsible:hidden" />
-                      <Minus className="ml-auto group-data-[state=closed]/collapsible:hidden" />
+                       
                     </SidebarMenuButton>
                   </CollapsibleTrigger>
                   {item.items?.length ? (
