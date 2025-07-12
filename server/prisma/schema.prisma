@@ -1,15 +1,206 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+// This is your Prisma schema file for ReWear - Community Clothing Exchange
+// Learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+// ===== ENUMS =====
+
+enum ItemStatus {
+  AVAILABLE
+  PENDING_SWAP
+  RESERVED
+  SWAPPED
+}
+
+enum SwapStatus {
+  PENDING
+  COMPLETED
+  CANCELED
+}
+
+enum ItemCondition {
+  NEW
+  LIKE_NEW
+  GOOD
+  FAIR
+  POOR
+}
+
+enum ItemSize {
+  XS
+  S
+  M
+  L
+  XL
+  XXL
+  XXXL
+  ONE_SIZE
+}
+
+enum ItemCategory {
+  TOPS
+  BOTTOMS
+  DRESSES
+  OUTERWEAR
+  SHOES
+  ACCESSORIES
+  BAGS
+  JEWELRY
+  ACTIVEWEAR
+  FORMAL
+  SLEEPWEAR
+  UNDERWEAR
+  OTHER
+}
+
+enum LedgerReason {
+  ITEM_UPLOAD
+  SWAP_REDEEM
+  BONUS_POINTS
+  ADMIN_ADJUSTMENT
+}
+
+// ===== MODELS =====
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  displayName  String
+ 
+  points       Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  items               Item[]
+  swapsRequested      Swap[]        @relation("SwapRequester")
+  pointLedger         PointLedger[]
+  tagsCreated         Tag[]         @relation("TagCreator")
+
+  @@map("users")
+}
+
+model Item {
+  id          String        @id @default(uuid())
+  title       String
+  description String
+  category    ItemCategory
+  condition   ItemCondition
+  size        ItemSize
+  status      ItemStatus    @default(AVAILABLE)
+  pointsValue Int
+  ownerId     String
+  deletedAt   DateTime?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  // Relations
+  owner       User          @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  images      Image[]
+  swaps       Swap[]
+  pointLedger PointLedger[]
+  tags        ItemTag[]
+
+  // Indexes
+  @@index([status, category])
+  @@index([ownerId])
+  @@index([status, createdAt])
+  @@index([category, size])
+  @@index([deletedAt])
+  @@map("items")
+}
+
+model Image {
+  id     String @id @default(uuid())
+  url    String
+  itemId String
+  order  Int?   @default(0)
+
+  // Relations
+  item Item @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  // Indexes
+  @@index([itemId])
+  @@index([itemId, order])
+  @@map("images")
+}
+
+model Swap {
+  id          String     @id @default(uuid())
+  itemId      String
+  requesterId String
+  pointsUsed  Int
+  status      SwapStatus @default(PENDING)
+  message     String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  // Relations
+  item      Item          @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  requester User          @relation("SwapRequester", fields: [requesterId], references: [id], onDelete: Cascade)
+  ledger    PointLedger[]
+
+  // Indexes
+  @@index([itemId])
+  @@index([requesterId])
+  @@index([status, createdAt])
+  @@map("swaps")
+}
+
+model PointLedger {
+  id        String        @id @default(uuid())
+  userId    String
+  delta     Int // Positive for earning, negative for spending
+  reason    LedgerReason
+  itemId    String?
+  swapId    String?
+  notes     String?
+  createdAt DateTime      @default(now())
+
+  // Relations
+  user User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  item Item? @relation(fields: [itemId], references: [id], onDelete: SetNull)
+  swap Swap? @relation(fields: [swapId], references: [id], onDelete: SetNull)
+
+  // Indexes
+  @@index([userId])
+  @@index([userId, createdAt])
+  @@index([reason])
+  @@map("point_ledger")
+}
+
+model Tag {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  createdBy String
+  createdAt DateTime @default(now())
+
+  // Relations
+  creator User      @relation("TagCreator", fields: [createdBy], references: [id], onDelete: Cascade)
+  items   ItemTag[]
+
+  // Indexes
+  @@index([name])
+  @@map("tags")
+}
+
+// Many-to-many relation table for Items and Tags
+model ItemTag {
+  itemId String
+  tagId  String
+
+  // Relations
+  item Item @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  tag  Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([itemId, tagId])
+  @@map("item_tags")
 }
