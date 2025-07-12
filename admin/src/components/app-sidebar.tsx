@@ -1,9 +1,9 @@
 import * as React from "react";
 import { GalleryVerticalEnd } from "lucide-react";
 import { SearchForm } from "@/components/search-form";
-// import { RippleButton } from "./magicui/ripple-button";
+import { RippleButton } from "./magicui/ripple-button";
 import { ChevronLeft } from "lucide-react";
-
+import BackButton from "./back-button";
 import {
   Sidebar,
   SidebarContent,
@@ -45,7 +45,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenuItem>
             <div className="flex items-center justify-between w-full px-2 py-1">
               <div className="flex items-center">
-                <ChevronLeft className="w-4 h-4 mr-2" />
+                <BackButton/>
               </div>
               <span className="font-semibold text-lg">Dashboard</span>
             </div>

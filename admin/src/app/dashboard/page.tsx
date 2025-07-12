@@ -1,5 +1,6 @@
-"use client"
+"use client";
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   Search,
   User,
@@ -9,11 +10,13 @@ import {
   Smartphone,
   Bell,
   TrendingUp,
+  ArrowLeft,
 } from "lucide-react";
+
 
 const Dashboard = () => {
   const [searchTerm, setSearchTerm] = useState("");
-
+  
   const dashboardCards = [
     {
       id: 1,
@@ -59,7 +62,7 @@ const Dashboard = () => {
       card.description.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleCardClick = (title:any) => {
+  const handleCardClick = (title: any) => {
     alert(`Opening ${title} module...`);
   };
 
@@ -68,15 +71,13 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen aboslute flex flex-col bg-black relative overflow-hidden">
-      {/* Floating background elements */}
+    <div className="min-h-screen  flex flex-col bg-black relative overflow-hidden">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute w-96 h-96 bg-white/10 rounded-full -top-48 -left-48 animate-pulse"></div>
         <div className="absolute w-80 h-80 bg-white/5 rounded-full top-1/2 -right-40 animate-bounce"></div>
         <div className="absolute w-64 h-64 bg-white/10 rounded-full -bottom-32 left-1/3 animate-pulse"></div>
       </div>
 
-      {/* Header */}
       <header className="sticky top-0 z-20 backdrop-blur-lg bg-white/10 border-b border-white/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
@@ -104,7 +105,6 @@ const Dashboard = () => {
         </div>
       </header>
 
-      {/* Main Content */}
       <main className="flex-1 relative z-10 w-full px-4 sm:px-6 lg:px-8 py-8 overflow-y-auto">
         <div className="w-full px-4 sm:px-6 lg:px-20">
           <div className="text-center mb-12">
@@ -116,7 +116,6 @@ const Dashboard = () => {
             </p>
           </div>
 
-          {/* Dashboard Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredCards.map((card) => {
               const IconComponent = card.icon;
@@ -127,9 +126,7 @@ const Dashboard = () => {
                   className="group cursor-pointer transform transition-all duration-300 hover:scale-105 hover:-translate-y-2"
                 >
                   <div className="h-full bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-6 hover:bg-white/20 transition-all duration-300 hover:shadow-2xl hover:shadow-white/10">
-                    <div
-                      className={`w-16 h-16  rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}
-                    >
+                    <div className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
                       <IconComponent className="h-8 w-8 text-white" />
                     </div>
 
