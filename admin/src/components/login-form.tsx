@@ -23,14 +23,14 @@ export function LoginForm({
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
-
+  const router = useRouter()
   const handleSubmit = async (e: React.FormEvent) => {
-    const router = useRouter()
-    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL as string
+     
+     
     e.preventDefault()
     setLoading(true)
     try {
-      const res = await axios.post(`${backendUrl}/api/login`, {
+      const res = await axios.post(`http://localhost:4000/api/admin/admin-login`, {
         email,
         password,
       })
@@ -40,9 +40,10 @@ export function LoginForm({
       localStorage.setItem("email", email)
 
       toast.success("Logged in successfully")
+       
       router.push("/dashboard")
-      
     } catch (err: any) {
+      console.log(err)
       toast.error(err?.response?.data?.message || "Login failed")
     } finally {
       setLoading(false)
@@ -90,7 +91,18 @@ export function LoginForm({
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
-               
+              <div className="flex flex-col gap-3">
+                <Button type="submit" className="w-full" disabled={loading}>
+                  {loading ? "Logging in..." : "Login"}
+                </Button>
+                 
+              </div>
+            </div>
+            <div className="mt-4 text-center text-sm">
+              Don&apos;t have an account?{" "}
+              <a href="#" className="underline underline-offset-4">
+                Sign up
+              </a>
             </div>
           </form>
         </CardContent>

@@ -13,6 +13,9 @@ dotenv.config()
 
 
 
+app.get("/api/test", (req, res) => {
+  res.send("Backend is alive")
+})
 
 
 

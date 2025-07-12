@@ -19,6 +19,7 @@ const adminLogin = async (req: Request, res: Response) => {
       res.json({
         success: true,
         token,
+        email
       });
     } else {
       res.json({ success: false, message: "Invalid credentials" });

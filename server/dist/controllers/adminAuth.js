@@ -25,6 +25,7 @@ const adminLogin = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             res.json({
                 success: true,
                 token,
+                email
             });
         }
         else {
