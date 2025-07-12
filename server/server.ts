@@ -2,6 +2,8 @@ import express from "express"
 import dotenv from "dotenv"
 import cors from "cors"
 import adminrouter from "./routes/admin.auth";
+import { connectCloudinary } from "./config/cloudinary";
+import itemRouter from "./routes/item.routes";
 const app = express();
 
 
@@ -12,7 +14,7 @@ app.use(cors({
 }))
  
 dotenv.config()
-
+connectCloudinary()
 
 
 
@@ -23,7 +25,7 @@ app.get("/test", (req, res) => {
 
 
 app.use("/api/admin",adminrouter)
-
+app.use("/api/product",itemRouter)
 
 
 app.listen(4000)
