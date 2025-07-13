@@ -31,13 +31,13 @@ export default function ManageListingsPage() {
   const [listings, setListings] = useState<Listing[]>([
     {
       id: 1,
-      title: "Wireless Headphones",
+      title: "Headphones",
       category: "Electronics",
       price: "$99.99",
       status: "Active",
       views: 245,
       isApproved: false,
-      image: "https://via.placeholder.com/300x200?text=Headphones",
+      image: "/headphones.jpg",
     },
     {
       id: 2,
@@ -47,7 +47,7 @@ export default function ManageListingsPage() {
       status: "Draft",
       views: 89,
       isApproved: false,
-      image: "https://via.placeholder.com/300x200?text=Shoes",
+      image: "/shoes.jpg",
     },
   ]);
 
@@ -80,7 +80,7 @@ export default function ManageListingsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 px-4 sm:px-6 lg:px-50 py-10">
+    <div className="min-h-screen  px-4 sm:px-6 lg:px-50 py-10">
       <h1 className="text-2xl font-bold mb-6 text-gray-800">Manage Listings</h1>
       <SearchBar
         searchTerm={searchTerm}
@@ -217,7 +217,7 @@ export default function ManageListingsPage() {
               <img
                 src={selectedListing.image}
                 alt={selectedListing.title}
-                className="w-full max-h-64 object-cover rounded"
+                className="w-full max-h-64 object-cover rounded border border-black"
               />
               <p>
                 <strong>Title:</strong> {selectedListing.title}

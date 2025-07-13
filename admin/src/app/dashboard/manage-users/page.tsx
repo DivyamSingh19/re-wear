@@ -83,7 +83,7 @@ export default function ManageUsersPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 px-4 sm:px-6 lg:px-50 py-10">
+    <div className="min-h-screen  px-4 sm:px-6 lg:px-50 py-10">
       <h1 className="text-2xl font-bold mb-6 text-gray-800">Manage Users</h1>
 
       <SearchBar
