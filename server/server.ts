@@ -4,6 +4,7 @@ import cors from "cors"
 import adminrouter from "./routes/admin.auth";
 import { connectCloudinary } from "./config/cloudinary";
 import itemRouter from "./routes/item.routes";
+import userRouter from "./routes/user.routes";
 const app = express();
 
 
@@ -26,6 +27,6 @@ app.get("/test", (req, res) => {
 
 app.use("/api/admin",adminrouter)
 app.use("/api/product",itemRouter)
-
+app.use("/api/auth",userRouter)
 
 app.listen(4000)
